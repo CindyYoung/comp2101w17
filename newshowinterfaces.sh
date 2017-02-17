@@ -9,19 +9,18 @@ interfaces=( $(ifconfig | grep '^[A-Za-z]' | awk '{print $1}') )
 
 #find the ip address of the interfaces
 ip0=$(ifconfig ${interfaces[0]} | sed -n '/inet addr:/s/.*addr:\([0-9.][0-9.]*\).*/\1/p')
+ipb0=$(ifconfig ${interfaces[0]} | sed -n '/Bcast:/s/.*Bcast:\([0-9.][0-9.]*\).*/\1/p')
 ip1=$(ifconfig ${interfaces[1]} | sed -n '/inet addr:/s/.*addr:\([0-9.][0-9.]*\).*/\1/p')
+ipb1=$(ifconfig ${interfaces[1]} | sed -n '/Bcast:/s/.*Bcast:\([0-9.][0-9.]*\).*/\1/p')
 
 #extract the default gateway ip from the route table
 
 gw=$(route -n | awk '/^0.0.0.0/{print $2}')
 
 echo "Interface ${interfaces[0]} has ip address $ip0"
+echo "Interface ${interfaces[0]} has bcast address $ipb0"
 echo "Interface ${interfaces[1]} has ip address $ip1"
+echo "Interface ${interfaces[1]} has bcast address $ipb1"
 echo "My default gateway is $gw"
 
-interfaceindex=0
-while [ $interfaceindex -lt ${#interfaces[@]} ]; do
-	echo ${speed[$interfaceindex]} ${interfaces[interfaceindex]} : ${ip[interfaceindex]}
-	interfaceindex+=1
-done
 
